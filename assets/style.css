@@ -1,0 +1,43 @@
+body {
+    background-image: linear-gradient(#0099ff, white);
+    
+}
+.card {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.display-4 {
+    text-align: center;
+    
+}
+
+.container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+form {
+    border: solid;
+    border-color: white;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 65%;
+    padding: 30px;
+    font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+.card-title {
+    font-size: 50px;
+    text-align: center;
+    font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+th {
+    font-family: 'ZCOOL KuaiLe', cursive;
+}
+

@@ -30,13 +30,21 @@ $("#submit").on("click", function(){
     alert("Incomplete");
 } else {
 
-  trainName = $("#train-name").val().trim();
+  trainName = $("#train-name")
+    .val()
+    .trim();
   console.log(trainName);
-  trainDest = $("#train-destination").val().trim();
+  trainDest = $("#train-destination")
+    .val()
+    .trim();
   console.log(trainDest);
-  trainFreq = $("#train-frequency").val().trim();
+  trainFreq = $("#train-frequency")
+    .val()
+      .trim();
   console.log(trainFreq);
-  trainStart = $("#train-time").val().trim();
+  trainStart = $("#train-time")
+    .val()
+      .trim();
   console.log(trainStart);
 
 //Values will show in firebase
@@ -44,10 +52,48 @@ $("#submit").on("click", function(){
     trainName: trainName,
     trainDest: trainDest,
     trainFreq: trainFreq,
-    trainStart: trainStart,
+    trainStart: trainStart
   });
 };
 
 });
 
+database.ref().on(
+  "child_added", 
+  function(childSnapshot) {
+
+    $("#schedule").append(
+      "<tr class='well'><th class='train-name'> " +
+      childSnapshot.val().trainName +
+      " </th><th class='train-destination'> " +
+      childSnapshot.val().trainDest +
+      " </th><th class='train-frequency'> " +
+      childSnapshot.val().trainFreq +
+      " </th><th class='train-time'> " +
+      childSnapshot.val().trainStart +
+      " </th></tr>"
+  );
+},
+function(errorObject) {
+  console.log("Errors handled: " + errorObject.code);
 });
+
+          //log to see if everything is functional
+          // console.log(snapshot.val());
+          // console.log(snapshot.val().trainName);
+          // console.log(snapshot.val().trainDest);
+          // console.log(snapshot.val().trainFreq);
+          // console.log(snapshot.val().trainStart);
+      
+      
+
+    //show up in train scheduler window
+    // $("#train-name").text(snapshot.child().trainName);
+    // $("#train-destination").text(snapshot.child().trainDest);
+    // $("#train-frequency").text(snapshot.child().trainFreq);
+    // $("#train-time").text(snapshot.child().trainStart);
+
+
+
+  })
+

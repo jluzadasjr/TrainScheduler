@@ -11,15 +11,18 @@
   var database = firebase.database();
   $(document).ready(function(){
 
-
+//Initial values - variables for my code
 var trainName = ""; 
 var trainDest = "";
 var trainFreq = 0;
 var trainStart = ""; 
 
+
+//Submit button for when you input the info
 $("#submit").on("click", function(){
   event.preventDefault();
 
+  //if/else statement to verify each input field in the form
   if ($("#train-name").val()==="" || 
   $("#train-destination").val()==="" ||
   $("#train-time").val()===""||
@@ -36,6 +39,7 @@ $("#submit").on("click", function(){
   trainStart = $("#train-time").val().trim();
   console.log(trainStart);
 
+//Values will show in firebase
   database.ref().push({
     trainName: trainName,
     trainDest: trainDest,

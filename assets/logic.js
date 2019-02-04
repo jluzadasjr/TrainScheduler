@@ -66,8 +66,6 @@ $("#submit").on("click", function(){
     $("#train-time").val("");
     $("#train-frequency").val("");
 
-// Prevents loading a new page
-    return false;
 });
 
 //Firebase event to add train to DB and row in html when user adds a new train
@@ -88,15 +86,19 @@ database.ref().on(
         // Train time converted
         var trainConversion = moment(childSnapshot.val().trainStart, "HH:mm");
         console.log(trainConversion);
+
         // Difference between the times
         var timeDifference = moment().diff(moment(trainConversion), "minutes");
         console.log(timeDifference);
+
         // Time apart 
         var trainRemainder = timeDifference % childSnapshot.val().trainFreq;
         console.log(trainRemainder);
+
         // Minutes away until train arrives
         var minAway = childSnapshot.val().trainFreq - trainRemainder;
         console.log(minAway);
+
         // Next arriving train
         var trainArrival = moment().add(minAway, "minutes");
         var arrivalConverted = moment(trainArrival).format("HH:mm");

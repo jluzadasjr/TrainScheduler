@@ -60,6 +60,14 @@ $("#submit").on("click", function(){
   });
 };
 
+// Clears text from form
+    $("#train-name").val("");
+    $("#train-destination").val("");
+    $("#train-time").val("");
+    $("#train-frequency").val("");
+
+// Prevents loading a new page
+    return false;
 });
 
 //Firebase event to add train to DB and row in html when user adds a new train
@@ -104,7 +112,11 @@ database.ref().on(
 
     $('#schedule').append(row);
 
-},
+  },
+  // Handle the errors
+    function(errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+          }
 );
 })
 

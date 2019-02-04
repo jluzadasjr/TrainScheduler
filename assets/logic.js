@@ -102,7 +102,7 @@ database.ref().on(
         var arrivalConverted = moment(trainArrival).format("HH:mm");
         console.log(arrivalConverted);
 
-    //Add train times to train to schedule
+    //Add train times to train schedule
     var row = $('<tr>');
     $(row).append($('<td>').text(childSnapshot.val().trainName));
     $(row).append($('<td>').text(childSnapshot.val().trainDest));

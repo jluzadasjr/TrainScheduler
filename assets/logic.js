@@ -8,21 +8,23 @@
     messagingSenderId: "676275002454"
   };
   firebase.initializeApp(config);
+
   var database = firebase.database();
-  $(document).ready(function(){
+
+$(document).ready(function(){
 
 //Initial values - variables for my code
 var trainName = ""; 
 var trainDest = "";
-var trainFreq = 0;
 var trainStart = ""; 
+var trainFreq = 0;
 
 
 //Submit button for when you input the info
 $("#submit").on("click", function(){
   event.preventDefault();
 
-  //if/else statement to verify each input field in the form
+  //if/else statement to grab text from input field in the form
   if ($("#train-name").val()==="" || 
   $("#train-destination").val()==="" ||
   $("#train-time").val()===""||
@@ -52,48 +54,57 @@ $("#submit").on("click", function(){
     trainName: trainName,
     trainDest: trainDest,
     trainFreq: trainFreq,
-    trainStart: trainStart
+    trainStart: trainStart, 
+    dateAdded: firebase.database.ServerValue.TIMESTAMP
+
   });
 };
 
 });
 
+//Firebase event to add train to DB and row in html when user adds a new train
 database.ref().on(
   "child_added", 
   function(childSnapshot) {
 
-    $("#schedule").append(
-      "<tr class='well'><th class='train-name'> " +
-      childSnapshot.val().trainName +
-      " </th><th class='train-destination'> " +
-      childSnapshot.val().trainDest +
-      " </th><th class='train-frequency'> " +
-      childSnapshot.val().trainFreq +
-      " </th><th class='train-time'> " +
-      childSnapshot.val().trainStart +
-      " </th></tr>"
-  );
+  	// Place train data into a variable.
+    var tName = childSnapshot.val().trainName;
+    console.log(tName);
+    var tDestination = childSnapshot.val().trainDest;
+    console.log(tDestination);
+    var tFrequency = childSnapshot.val().trainFreq;
+    console.log(tFrequency);
+    var tFirstTrain = childSnapshot.val().trainStart;
+    console.log(tFirstTrain);
+
+        // Train time converted
+        var trainConversion = moment(childSnapshot.val().trainStart, "HH:mm");
+        console.log(trainConversion);
+        // Difference between the times
+        var timeDifference = moment().diff(moment(trainConversion), "minutes");
+        console.log(timeDifference);
+        // Time apart 
+        var trainRemainder = timeDifference % childSnapshot.val().trainFreq;
+        console.log(trainRemainder);
+        // Minutes away until train arrives
+        var minAway = childSnapshot.val().trainFreq - trainRemainder;
+        console.log(minAway);
+        // Next arriving train
+        var trainArrival = moment().add(minAway, "minutes");
+        var arrivalConverted = moment(trainArrival).format("HH:mm");
+        console.log(arrivalConverted);
+
+    //Add train times to train to schedule
+    var row = $('<tr>');
+    $(row).append($('<td>').text(childSnapshot.val().trainName));
+    $(row).append($('<td>').text(childSnapshot.val().trainDest));
+    $(row).append($('<td>').text(childSnapshot.val().trainFreq));
+    $(row).append($('<td>').text(trainArrival));
+    $(row).append($('<td>').text(minAway));
+
+    $('#schedule').append(row);
+
 },
-function(errorObject) {
-  console.log("Errors handled: " + errorObject.code);
-});
-
-          //log to see if everything is functional
-          // console.log(snapshot.val());
-          // console.log(snapshot.val().trainName);
-          // console.log(snapshot.val().trainDest);
-          // console.log(snapshot.val().trainFreq);
-          // console.log(snapshot.val().trainStart);
-      
-      
-
-    //show up in train scheduler window
-    // $("#train-name").text(snapshot.child().trainName);
-    // $("#train-destination").text(snapshot.child().trainDest);
-    // $("#train-frequency").text(snapshot.child().trainFreq);
-    // $("#train-time").text(snapshot.child().trainStart);
-
-
-
-  })
+);
+})
 
